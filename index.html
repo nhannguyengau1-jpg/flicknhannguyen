@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nhan Nguyen | Nhiếp Ảnh Gia</title>
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/glightbox/dist/css/glightbox.min.css">
+
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+            background: #0a0a0a;
+            color: #fff;
+            line-height: 1.6;
+        }
+        header {
+            text-align: center;
+            padding: 80px 20px 50px;
+            background: linear-gradient(180deg, #141414 0%, #0a0a0a 100%);
+        }
+        header h1 {
+            font-size: 3.2rem;
+            font-weight: 300;
+            letter-spacing: 8px;
+            text-transform: uppercase;
+            margin-bottom: 12px;
+        }
+        header p {
+            color: #888;
+            font-size: 1.15rem;
+            letter-spacing: 3px;
+        }
+        .gallery {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+            gap: 24px;
+            padding: 40px 24px 80px;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+        .photo-card {
+            position: relative;
+            overflow: hidden;
+            border-radius: 10px;
+            background: #1a1a1a;
+            aspect-ratio: 4/3;
+            cursor: pointer;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+            transition: transform 0.35s ease, box-shadow 0.35s ease;
+            display: none;
+        }
+        .photo-card.show { display: block; }
+        .photo-card:hover {
+            transform: translateY(-6px);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.7);
+        }
+        .photo-card a { display: block; width: 100%; height: 100%; }
+        .photo-card img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+            transition: transform 0.6s ease;
+        }
+        .photo-card:hover img { transform: scale(1.08); }
+        .copyright {
+            position: absolute;
+            bottom: 14px;
+            right: 14px;
+            background: rgba(0, 0, 0, 0.75);
+            color: #fff;
+            font-size: 0.78rem;
+            padding: 6px 12px;
+            border-radius: 4px;
+            letter-spacing: 0.5px;
+            backdrop-filter: blur(4px);
+            pointer-events: none;
+            white-space: nowrap;
+            z-index: 2;
+        }
+        .copyright span { color: #ccc; margin: 0 4px; }
+        footer {
+            text-align: center;
+            padding: 40px 20px;
+            background: #111;
+            color: #666;
+            font-size: 0.95rem;
+            border-top: 1px solid #222;
+        }
+        footer a { color: #aaa; text-decoration: none; }
+        footer a:hover { color: #fff; }
+        @media (max-width: 600px) {
+            header h1 { font-size: 2.2rem; letter-spacing: 4px; }
+            .gallery { grid-template-columns: 1fr; padding: 30px 16px 60px; }
+        }
+        .glightbox-clean .gslide-description {
+            background: rgba(0, 0, 0, 0.75);
+            color: #fff;
+            padding: 12px 20px;
+            border-radius: 6px;
+            font-size: 0.95rem;
+            letter-spacing: 0.5px;
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <h1>Nhan Nguyen</h1>
+        <p>Nhiếp Ảnh Gia</p>
+    </header>
+
+    <div class="gallery" id="gallery"></div>
+
+    <footer>
+        <p>© 2020 Nhan Nguyen — All Rights Reserved</p>
+        <p style="margin-top: 8px; font-size: 0.85rem;">
+            Hosted on <a href="https://github.com" target="_blank">GitHub Pages</a>
+        </p>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/glightbox/dist/js/glightbox.min.js"></script>
+
+    <script>
+        // ====================== ĐÃ SỬA ĐÚNG ======================
+        const username = "nhannguyengau1-jpg";
+        const repo = "nhannguyen";
+        const totalPhotos = 20;
+        // ==========================================================
+
+        // Ảnh nằm ngay thư mục gốc (không có /images/)
+        const baseUrl = `https://raw.githubusercontent.com/${username}/${repo}/main/`;
+        const gallery = document.getElementById('gallery');
+
+        for (let i = 1; i <= totalPhotos; i++) {
+            const imgUrl = `${baseUrl}photo${i}.jpg`;
+
+            const card = document.createElement('div');
+            card.className = 'photo-card';
+
+            card.innerHTML = `
+                <a href="${imgUrl}" 
+                   class="glightbox"
+                   data-gallery="nhan-nguyen"
+                   data-title="© Nhan Nguyen | 17/01/2020">
+                    <img src="${imgUrl}" alt="Ảnh ${i} của Nhan Nguyen">
+                </a>
+                <div class="copyright">© Nhan Nguyen <span>|</span> 17/01/2020</div>
+            `;
+
+            const img = card.querySelector('img');
+            img.onload = () => card.classList.add('show');
+            img.onerror = () => card.remove();
+
+            gallery.appendChild(card);
+        }
+
+        setTimeout(() => {
+            GLightbox({
+                selector: '.glightbox',
+                touchNavigation: true,
+                loop: true,
+                openEffect: 'zoom',
+                closeEffect: 'fade',
+                slideEffect: 'slide',
+                keyboardNavigation: true,
+                closeOnOutsideClick: true,
+                preload: true
+            });
+        }, 800);
+    </script>
+
+</body>
+</html>
